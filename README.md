@@ -30,10 +30,13 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run build` | Production build |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests (Vitest) |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:migrate` | Run migrations (requires `.env`) |
 
 ## Status
 
-Phase 1 scaffold in progress. Implementation follows the [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 1 complete (Next.js, Prisma schema, Vitest, shadcn shell). Phase 2+ follows the [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 

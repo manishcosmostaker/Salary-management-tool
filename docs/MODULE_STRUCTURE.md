@@ -4,32 +4,24 @@ Single **Next.js** repository (not git submodules). “Modules” are **logical 
 
 ```
 salary-management-tool/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx                # Root layout, fonts, providers
-│   ├── page.tsx                  # Dashboard / redirect
-│   ├── employees/                # Employee UI pages
-│   │   ├── page.tsx              # List (paginated)
-│   │   ├── new/page.tsx          # Create form
-│   │   └── [id]/
-│   │       ├── page.tsx          # View detail
-│   │       └── edit/page.tsx     # Update form
-│   ├── insights/page.tsx         # Salary metrics dashboard
-│   └── api/                      # Route Handlers (REST)
-│       ├── employees/
-│       │   ├── route.ts          # GET list, POST create
-│       │   └── [id]/route.ts     # GET, PATCH, DELETE
-│       └── insights/
-│           ├── country/[country]/route.ts
-│           └── ...
-├── components/
-│   ├── ui/                       # shadcn primitives
-│   └── employees/                # Feature components (table, forms)
-├── lib/
-│   ├── db.ts                     # Prisma singleton (pooled URL)
-│   ├── validations/              # Zod schemas (shared API + forms)
-│   └── services/                 # Business logic — **unit tested**
-│       ├── employee.service.ts
-│       └── insights.service.ts
+├── src/
+│   ├── app/                      # Next.js App Router
+│   │   ├── layout.tsx            # Root layout, fonts, providers
+│   │   ├── page.tsx              # Home
+│   │   ├── employees/            # Employee UI pages
+│   │   ├── insights/             # Salary metrics dashboard
+│   │   └── api/                  # Route Handlers (REST) — Phase 3+
+│   ├── components/
+│   │   ├── ui/                   # shadcn primitives
+│   │   ├── layout/               # App shell (header, etc.)
+│   │   └── employees/            # Feature components (table, forms)
+│   └── lib/
+│       ├── utils.ts              # shadcn cn helper
+│       ├── db.ts                 # Prisma singleton (pooled URL)
+│       ├── validations/          # Zod schemas (shared API + forms)
+│       └── services/             # Business logic — **unit tested**
+│           ├── employee.service.ts
+│           └── insights.service.ts
 ├── prisma/
 │   ├── schema.prisma
 │   └── migrations/
