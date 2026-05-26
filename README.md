@@ -13,11 +13,27 @@ Minimal salary management application for an organization (~10,000 employees). B
 | UI | **shadcn/ui** + Tailwind |
 | Deploy | **Vercel** (app) + **Supabase** (database) |
 
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+
 ## Status
 
-🚧 **Repository initialized — application not scaffolded yet.**
-
-Implementation follows the [TDD commit plan](./docs/TDD_COMMIT_PLAN.md). Each meaningful step lands as its own commit (red → green → refactor).
+Phase 1 scaffold in progress. Implementation follows the [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 
