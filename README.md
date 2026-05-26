@@ -44,9 +44,16 @@ Open [http://localhost:3000](http://localhost:3000).
 | PATCH | `/api/employees/:id` | Update employee |
 | DELETE | `/api/employees/:id` | Delete employee |
 
+### Insights API
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/insights/country/:country` | Min, max, avg salary and headcount for country |
+| GET | `/api/insights/country/:country/job-title/:jobTitle` | Salary stats for a role in a country |
+
 ## Status
 
-Phase 3 complete (employee REST API). Phase 4 (insights) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 4 complete (salary insights API). Phase 5 (seed script) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 
