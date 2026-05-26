@@ -1,26 +1,17 @@
-import type { Employee, Prisma, PrismaClient } from "@prisma/client";
+import type { Employee, PrismaClient } from "@prisma/client";
 
 import { prisma } from "@/lib/db";
+import { buildEmployeeWhere } from "@/lib/prisma/employee-where";
+import type {
+  ListEmployeesParams,
+  PaginatedEmployees,
+} from "@/lib/services/employee.types";
 import type {
   CreateEmployeeInput,
   UpdateEmployeeInput,
 } from "@/lib/validations/employee";
 
-export type ListEmployeesParams = {
-  page?: number;
-  limit?: number;
-  search?: string;
-  country?: string;
-  jobTitle?: string;
-};
-
-export type PaginatedEmployees = {
-  data: Employee[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-};
+export type { ListEmployeesParams, PaginatedEmployees };
 
 export function createEmployeeService(db: PrismaClient) {
   return {
@@ -68,32 +59,6 @@ export function createEmployeeService(db: PrismaClient) {
       return db.employee.delete({ where: { id } });
     },
   };
-}
-
-function buildEmployeeWhere(
-  params: ListEmployeesParams,
-): Prisma.EmployeeWhereInput {
-  const where: Prisma.EmployeeWhereInput = {};
-
-  if (params.country) {
-    where.country = params.country.toUpperCase();
-  }
-
-  if (params.jobTitle) {
-    where.jobTitle = params.jobTitle;
-  }
-
-  if (params.search) {
-    const search = params.search.trim();
-    where.OR = [
-      { fullName: { contains: search, mode: "insensitive" } },
-      { email: { contains: search, mode: "insensitive" } },
-      { jobTitle: { contains: search, mode: "insensitive" } },
-      { department: { contains: search, mode: "insensitive" } },
-    ];
-  }
-
-  return where;
 }
 
 export const employeeService = createEmployeeService(prisma);
