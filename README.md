@@ -54,7 +54,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Status
 
-Phase 5 complete (10k seed script). Phase 6 (UI) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 6 complete (employee CRUD UI + insights dashboard). Phase 7 (deploy & CI) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 
