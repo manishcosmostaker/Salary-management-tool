@@ -1,7 +1,10 @@
 import type { Employee, Prisma, PrismaClient } from "@prisma/client";
 
 import { prisma } from "@/lib/db";
-import type { CreateEmployeeInput } from "@/lib/validations/employee";
+import type {
+  CreateEmployeeInput,
+  UpdateEmployeeInput,
+} from "@/lib/validations/employee";
 
 export type ListEmployeesParams = {
   page?: number;
@@ -48,6 +51,21 @@ export function createEmployeeService(db: PrismaClient) {
         limit,
         totalPages: Math.ceil(total / limit) || 1,
       };
+    },
+
+    async getById(id: string): Promise<Employee | null> {
+      return db.employee.findUnique({ where: { id } });
+    },
+
+    async update(id: string, input: UpdateEmployeeInput): Promise<Employee> {
+      return db.employee.update({
+        where: { id },
+        data: input,
+      });
+    },
+
+    async delete(id: string): Promise<Employee> {
+      return db.employee.delete({ where: { id } });
     },
   };
 }
