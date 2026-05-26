@@ -103,3 +103,48 @@ describe("EmployeeService.list", () => {
     );
   });
 });
+
+describe("EmployeeService.getById, update, delete", () => {
+  let db: PrismaClient;
+
+  beforeEach(() => {
+    db = createMockDb();
+    vi.mocked(db.employee.findUnique).mockResolvedValue(mockEmployee);
+    vi.mocked(db.employee.update).mockResolvedValue({
+      ...mockEmployee,
+      salary: 9000000,
+    });
+    vi.mocked(db.employee.delete).mockResolvedValue(mockEmployee);
+  });
+
+  it("finds an employee by id", async () => {
+    const service = createEmployeeService(db);
+    const result = await service.getById("emp_1");
+
+    expect(db.employee.findUnique).toHaveBeenCalledWith({
+      where: { id: "emp_1" },
+    });
+    expect(result).toEqual(mockEmployee);
+  });
+
+  it("updates an employee", async () => {
+    const service = createEmployeeService(db);
+    const result = await service.update("emp_1", { salary: 9000000 });
+
+    expect(db.employee.update).toHaveBeenCalledWith({
+      where: { id: "emp_1" },
+      data: { salary: 9000000 },
+    });
+    expect(result.salary).toBe(9000000);
+  });
+
+  it("deletes an employee", async () => {
+    const service = createEmployeeService(db);
+    const result = await service.delete("emp_1");
+
+    expect(db.employee.delete).toHaveBeenCalledWith({
+      where: { id: "emp_1" },
+    });
+    expect(result).toEqual(mockEmployee);
+  });
+});
