@@ -33,6 +33,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm test` | Run unit tests (Vitest) |
 | `npm run db:generate` | Generate Prisma client |
 | `npm run db:migrate` | Run migrations (requires `.env`) |
+| `npm run seed -- --reset` | Seed 10,000 employees (see [seed perf notes](./docs/SEED_PERFORMANCE.md)) |
 
 ### Employee API
 
@@ -53,7 +54,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Status
 
-Phase 4 complete (salary insights API). Phase 5 (seed script) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 5 complete (10k seed script). Phase 6 (UI) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 
