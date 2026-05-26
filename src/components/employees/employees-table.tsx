@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { DeleteEmployeeDialog } from "@/components/employees/delete-employee-dialog";
 import { listEmployees } from "@/lib/api/employees";
 import { formatSalary } from "@/lib/format/currency";
 import { Badge } from "@/components/ui/badge";
@@ -147,12 +148,21 @@ export function EmployeesTable() {
                     {formatSalary(employee.salary, employee.currency)}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Link
-                      href={`/employees/${employee.id}`}
-                      className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-                    >
-                      View
-                    </Link>
+                    <div className="flex justify-end gap-1">
+                      <Link
+                        href={`/employees/${employee.id}`}
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "sm" }),
+                        )}
+                      >
+                        View
+                      </Link>
+                      <DeleteEmployeeDialog
+                        employeeId={employee.id}
+                        employeeName={employee.fullName}
+                        triggerVariant="outline"
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

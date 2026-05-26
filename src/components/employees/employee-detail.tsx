@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
+import { DeleteEmployeeDialog } from "@/components/employees/delete-employee-dialog";
 import { getEmployee } from "@/lib/api/employees";
 import { formatDate, formatSalary } from "@/lib/format/currency";
 import { Badge } from "@/components/ui/badge";
@@ -13,10 +14,9 @@ import { cn } from "@/lib/utils";
 
 type EmployeeDetailProps = {
   employeeId: string;
-  actions?: React.ReactNode;
 };
 
-export function EmployeeDetail({ employeeId, actions }: EmployeeDetailProps) {
+export function EmployeeDetail({ employeeId }: EmployeeDetailProps) {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["employee", employeeId],
     queryFn: () => getEmployee(employeeId),
@@ -55,7 +55,10 @@ export function EmployeeDetail({ employeeId, actions }: EmployeeDetailProps) {
           >
             Edit
           </Link>
-          {actions}
+          <DeleteEmployeeDialog
+            employeeId={data.id}
+            employeeName={data.fullName}
+          />
         </div>
       </div>
 
