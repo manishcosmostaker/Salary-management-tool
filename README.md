@@ -34,9 +34,19 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run db:generate` | Generate Prisma client |
 | `npm run db:migrate` | Run migrations (requires `.env`) |
 
+### Employee API
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/employees?page&limit&search&country&jobTitle` | Paginated list |
+| POST | `/api/employees` | Create employee |
+| GET | `/api/employees/:id` | Get by id |
+| PATCH | `/api/employees/:id` | Update employee |
+| DELETE | `/api/employees/:id` | Delete employee |
+
 ## Status
 
-Phase 2 complete (employee validation + service layer). Phase 3 (API routes) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 3 complete (employee REST API). Phase 4 (insights) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 
