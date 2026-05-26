@@ -54,3 +54,52 @@ describe("EmployeeService.create", () => {
     expect(result).toEqual(mockEmployee);
   });
 });
+
+describe("EmployeeService.list", () => {
+  let db: PrismaClient;
+
+  beforeEach(() => {
+    db = createMockDb();
+    vi.mocked(db.employee.findMany).mockResolvedValue([mockEmployee]);
+    vi.mocked(db.employee.count).mockResolvedValue(42);
+  });
+
+  it("returns paginated employees with metadata", async () => {
+    const service = createEmployeeService(db);
+    const result = await service.list({ page: 2, limit: 10 });
+
+    expect(db.employee.findMany).toHaveBeenCalledWith({
+      where: {},
+      skip: 10,
+      take: 10,
+      orderBy: { fullName: "asc" },
+    });
+    expect(db.employee.count).toHaveBeenCalledWith({ where: {} });
+    expect(result).toEqual({
+      data: [mockEmployee],
+      total: 42,
+      page: 2,
+      limit: 10,
+      totalPages: 5,
+    });
+  });
+
+  it("applies country and search filters", async () => {
+    const service = createEmployeeService(db);
+    await service.list({ country: "gb", search: "ada" });
+
+    expect(db.employee.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          country: "GB",
+          OR: [
+            { fullName: { contains: "ada", mode: "insensitive" } },
+            { email: { contains: "ada", mode: "insensitive" } },
+            { jobTitle: { contains: "ada", mode: "insensitive" } },
+            { department: { contains: "ada", mode: "insensitive" } },
+          ],
+        },
+      }),
+    );
+  });
+});
