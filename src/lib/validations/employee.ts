@@ -34,5 +34,14 @@ export const updateEmployeeSchema = employeeFieldsSchema
     message: "At least one field must be provided",
   });
 
+export const listEmployeesQuerySchema = z.object({
+  page: z.coerce.number().int().positive().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+  search: z.string().trim().min(1).optional(),
+  country: z.string().trim().length(2).optional(),
+  jobTitle: z.string().trim().min(1).optional(),
+});
+
 export type CreateEmployeeInput = z.infer<typeof createEmployeeSchema>;
 export type UpdateEmployeeInput = z.infer<typeof updateEmployeeSchema>;
+export type ListEmployeesQuery = z.infer<typeof listEmployeesQuerySchema>;
