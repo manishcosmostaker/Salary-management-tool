@@ -1,7 +1,10 @@
 import type { PrismaClient } from "@prisma/client";
 
 import { prisma } from "@/lib/db";
-import type { CountrySalaryInsights } from "@/lib/services/insights.types";
+import type {
+  CountryJobTitleSalaryInsights,
+  CountrySalaryInsights,
+} from "@/lib/services/insights.types";
 
 function normalizeCountry(country: string) {
   return country.trim().toUpperCase();
@@ -27,6 +30,34 @@ export function createInsightsService(db: PrismaClient) {
 
       return {
         country: normalizedCountry,
+        minSalary: result._min.salary,
+        maxSalary: result._max.salary,
+        averageSalary: roundAverage(result._avg.salary),
+        employeeCount: result._count._all,
+      };
+    },
+
+    async getCountryJobTitleSalaryInsights(
+      country: string,
+      jobTitle: string,
+    ): Promise<CountryJobTitleSalaryInsights> {
+      const normalizedCountry = normalizeCountry(country);
+      const normalizedJobTitle = jobTitle.trim();
+
+      const result = await db.employee.aggregate({
+        where: {
+          country: normalizedCountry,
+          jobTitle: normalizedJobTitle,
+        },
+        _min: { salary: true },
+        _max: { salary: true },
+        _avg: { salary: true },
+        _count: { _all: true },
+      });
+
+      return {
+        country: normalizedCountry,
+        jobTitle: normalizedJobTitle,
         minSalary: result._min.salary,
         maxSalary: result._max.salary,
         averageSalary: roundAverage(result._avg.salary),
