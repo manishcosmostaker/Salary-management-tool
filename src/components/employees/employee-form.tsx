@@ -15,7 +15,9 @@ import { Label } from "@/components/ui/label";
 type EmployeeFormProps = {
   initial?: EmployeeRecord;
   submitLabel: string;
-  onSubmit: (values: CreateEmployeeInput | UpdateEmployeeInput) => Promise<void>;
+  onSubmit: (
+    values: CreateEmployeeInput | UpdateEmployeeInput,
+  ) => Promise<void>;
 };
 
 const EMPLOYMENT_TYPES = Object.values(EmploymentType);
@@ -79,7 +81,7 @@ export function EmployeeForm({
         department: values.department.trim(),
         employmentType: values.employmentType,
         email: values.email.trim(),
-        hireDate: values.hireDate,
+        hireDate: new Date(`${values.hireDate}T00:00:00.000Z`),
       });
     } catch (submitError) {
       setError(

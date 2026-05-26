@@ -4,13 +4,18 @@ import { useRouter } from "next/navigation";
 
 import { EmployeeForm } from "@/components/employees/employee-form";
 import { createEmployee } from "@/lib/api/employees";
-import type { CreateEmployeeInput } from "@/lib/validations/employee";
+import type {
+  CreateEmployeeInput,
+  UpdateEmployeeInput,
+} from "@/lib/validations/employee";
 
 export default function NewEmployeePage() {
   const router = useRouter();
 
-  async function handleSubmit(values: CreateEmployeeInput) {
-    const employee = await createEmployee(values);
+  async function handleSubmit(
+    values: CreateEmployeeInput | UpdateEmployeeInput,
+  ) {
+    const employee = await createEmployee(values as CreateEmployeeInput);
     router.push(`/employees/${employee.id}`);
     router.refresh();
   }
