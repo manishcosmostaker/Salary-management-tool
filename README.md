@@ -36,7 +36,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Status
 
-Phase 1 complete (Next.js, Prisma schema, Vitest, shadcn shell). Phase 2+ follows the [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 2 complete (employee validation + service layer). Phase 3 (API routes) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
 
 ## Documentation
 
