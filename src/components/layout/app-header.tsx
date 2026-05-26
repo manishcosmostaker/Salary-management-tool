@@ -13,7 +13,7 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="text-sm font-semibold tracking-tight">
+        <Link href="/" className="text-2xl font-semibold tracking-tight">
           Salary Management
         </Link>
         <nav className="flex items-center gap-1">

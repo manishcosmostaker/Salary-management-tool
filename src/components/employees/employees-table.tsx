@@ -65,8 +65,8 @@ export function EmployeesTable() {
             onChange={(event) => setSearchInput(event.target.value)}
           />
         </div>
-        <div className="space-y-1">
-          <label className="text-sm font-medium" htmlFor="country">
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-medium mb-0" htmlFor="country">
             Country
           </label>
           <Input

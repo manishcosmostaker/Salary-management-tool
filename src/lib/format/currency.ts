@@ -1,16 +1,7 @@
-const COUNTRY_CURRENCY: Record<string, string> = {
-  US: "USD",
-  GB: "GBP",
-  DE: "EUR",
-  IN: "INR",
-  CA: "CAD",
-  AU: "AUD",
-  FR: "EUR",
-  SG: "SGD",
-};
+import { currencyForCountryCode } from "@/lib/constants/employee-options";
 
 export function currencyForCountry(countryCode: string) {
-  return COUNTRY_CURRENCY[countryCode.toUpperCase()] ?? "USD";
+  return currencyForCountryCode(countryCode);
 }
 
 export function formatSalary(amountMinorUnits: number, currency: string) {
