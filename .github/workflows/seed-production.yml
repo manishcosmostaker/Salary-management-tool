@@ -1,0 +1,61 @@
+name: Seed Production DB
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: Number of employees to seed
+        required: false
+        default: "10000"
+      batch_size:
+        description: Batch size for createMany
+        required: false
+        default: "500"
+      reset:
+        description: Reset table before seeding
+        required: false
+        type: boolean
+        default: true
+      seed:
+        description: RNG seed (deterministic output)
+        required: false
+        default: "42"
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate required secrets
+        run: |
+          test -n "${DATABASE_URL}" || (echo "Missing DATABASE_URL secret" && exit 1)
+          test -n "${DIRECT_URL}" || (echo "Missing DIRECT_URL secret" && exit 1)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+
+      - name: Run seed script
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: |
+          RESET_FLAG=""
+          if [ "${{ github.event.inputs.reset }}" = "true" ]; then
+            RESET_FLAG="--reset"
+          fi
+
+          npm run seed -- --count "${{ github.event.inputs.count }}" --batch-size "${{ github.event.inputs.batch_size }}" --seed "${{ github.event.inputs.seed }}" ${RESET_FLAG}

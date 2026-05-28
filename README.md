@@ -54,13 +54,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Status
 
-Phase 6 complete (employee CRUD UI + insights dashboard). Phase 7 (deploy & CI) is next — see [TDD commit plan](./docs/TDD_COMMIT_PLAN.md).
+Phase 7 complete (CI + deployment runbooks + manual production seed workflow).
 
 ## Documentation
 
 - [Stack & deployment](./docs/STACK.md)
 - [Module structure](./docs/MODULE_STRUCTURE.md)
 - [TDD commit plan](./docs/TDD_COMMIT_PLAN.md)
+- [Deployment and env setup](./docs/DEPLOYMENT.md)
+- [Vercel + Supabase notes](./docs/VERCEL_SUPABASE.md)
+- [Seed performance notes](./docs/SEED_PERFORMANCE.md)
 
 ## License
 
