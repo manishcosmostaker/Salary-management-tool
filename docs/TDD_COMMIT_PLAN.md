@@ -2,6 +2,8 @@
 
 Assessment expects **frequent, incremental commits** that show **red → green → refactor** evolution. Each row below is intended as **one commit** (sometimes two if red/green are clearer separate).
 
+> Status: Phases 0–7 completed. Additional hardening commits were added afterward for request optimization and UX stability.
+
 ## Phase 0 — Repository (current)
 
 | # | Commit message | Contents |

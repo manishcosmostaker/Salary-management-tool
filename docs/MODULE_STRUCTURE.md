@@ -1,39 +1,47 @@
 # Module structure
 
-Single **Next.js** repository (not git submodules). “Modules” are **logical folders** with clear boundaries for testing and maintenance.
+Single **Next.js** repository with clear boundaries for API, UI, domain logic, and operations.
 
 ```
 salary-management-tool/
-├── src/
-│   ├── app/                      # Next.js App Router
-│   │   ├── layout.tsx            # Root layout, fonts, providers
-│   │   ├── page.tsx              # Home
-│   │   ├── employees/            # Employee UI pages
-│   │   ├── insights/             # Salary metrics dashboard
-│   │   └── api/                  # Route Handlers (REST) — Phase 3+
-│   ├── components/
-│   │   ├── ui/                   # shadcn primitives
-│   │   ├── layout/               # App shell (header, etc.)
-│   │   └── employees/            # Feature components (table, forms)
-│   └── lib/
-│       ├── utils.ts              # shadcn cn helper
-│       ├── db.ts                 # Prisma singleton (pooled URL)
-│       ├── validations/          # Zod schemas (shared API + forms)
-│       └── services/             # Business logic — **unit tested**
-│           ├── employee.service.ts
-│           └── insights.service.ts
-├── prisma/
-│   ├── schema.prisma
-│   └── migrations/
-├── scripts/
-│   └── seed.ts                   # 10k bulk seed (batched)
+├── .github/workflows/
+│   ├── ci.yml
+│   └── seed-production.yml
 ├── data/
-│   ├── first_names.txt           # Provided / committed
+│   ├── first_names.txt
 │   └── last_names.txt
-├── __tests__/                    # Or colocated *.test.ts
-│   ├── unit/
-│   └── integration/
-└── docs/                         # Assessment artifacts
+├── docs/
+├── prisma/
+│   └── schema.prisma
+├── scripts/
+│   └── seed.ts
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── employees/
+│   │   │   └── insights/
+│   │   ├── employees/
+│   │   ├── insights/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── employees/
+│   │   ├── insights/
+│   │   ├── layout/
+│   │   ├── providers/
+│   │   └── ui/
+│   └── lib/
+│       ├── api/
+│       ├── constants/
+│       ├── format/
+│       ├── prisma/
+│       ├── seed/
+│       ├── services/
+│       ├── types/
+│       ├── validations/
+│       └── db.ts
+├── README.md
+└── package.json
 ```
 
 ## Responsibility boundaries
@@ -43,9 +51,12 @@ salary-management-tool/
 | `lib/validations` | Input rules (Zod) | Unit |
 | `lib/services` | CRUD + insight calculations orchestration | Unit (mock DB) |
 | `app/api/*` | HTTP, status codes, parse body | Integration |
-| `app/employees/*` | UI, forms, table | Component / E2E (light) |
+| `app/employees/*` | Employee pages (list/detail/edit/create) | UI + route-level behavior |
+| `app/insights/*` | Insights dashboard page | UI |
 | `scripts/seed.ts` | Fast bulk insert | Script smoke / timing note in docs |
-| `prisma` | Schema, indexes | Migration applies cleanly |
+| `lib/constants` | Shared country/job title/department option lists | Unit/integration behavior |
+| `.github/workflows` | CI and manual production seed | Operational checks |
+| `prisma` | Schema and indexes | Migration/apply validation |
 
 ## Data flow
 
@@ -55,7 +66,7 @@ Browser → Route Handler → Service → Prisma → PostgreSQL
            Zod validation
 ```
 
-Insights always use **SQL aggregates** in the service/repository layer, never load 10,000 rows into memory.
+Insights use **SQL aggregates** in the service layer, never load all 10k rows into memory.
 
 ## Indexes (Prisma)
 
@@ -63,7 +74,7 @@ Insights always use **SQL aggregates** in the service/repository layer, never lo
 - `(country, jobTitle)`
 - Optional: `salary` for global min/max
 
-## Employee fields (planned)
+## Employee fields (implemented)
 
 | Field | Purpose |
 |-------|---------|

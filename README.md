@@ -54,7 +54,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Status
 
-Phase 7 complete (CI + deployment runbooks + manual production seed workflow).
+Phases 0–7 complete (core implementation, CI, deployment runbooks, manual production seed workflow), plus post-phase performance and UX hardening.
 
 ## Documentation
 
@@ -67,4 +67,4 @@ Phase 7 complete (CI + deployment runbooks + manual production seed workflow).
 
 ## License
 
-MIT (adjust if your assessment requires otherwise)
+MIT

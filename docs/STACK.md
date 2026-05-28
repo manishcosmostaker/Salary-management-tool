@@ -29,7 +29,8 @@ App Router is not “automatic magic” — we still design routes, services, an
 
 - Copy-in components under `components/ui/`
 - Tailwind for layout
-- **TanStack Table** for paginated employee grid (10k rows in DB, ~25–50 per page in UI)
+- React Query for request orchestration, caching, and cancellation
+- Server-side pagination (25 rows/page default) for employee list scalability
 
 ## Testing
 
