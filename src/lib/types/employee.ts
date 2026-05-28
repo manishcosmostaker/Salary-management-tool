@@ -15,8 +15,20 @@ export type EmployeeRecord = {
   updatedAt: string;
 };
 
+export type EmployeeListItem = Pick<
+  EmployeeRecord,
+  | "id"
+  | "fullName"
+  | "jobTitle"
+  | "country"
+  | "salary"
+  | "currency"
+  | "department"
+  | "email"
+>;
+
 export type PaginatedEmployeesResponse = {
-  data: EmployeeRecord[];
+  data: EmployeeListItem[];
   total: number;
   page: number;
   limit: number;

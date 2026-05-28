@@ -30,19 +30,28 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 
+function isAbortLikeError(error: unknown): boolean {
+  return (
+    error instanceof DOMException ||
+    (error instanceof Error &&
+      (error.name === "AbortError" || error.name === "CanceledError"))
+  );
+}
+
 export function InsightsDashboard() {
   const [country, setCountry] = useState<string>(INSIGHT_COUNTRIES[0].code);
   const [jobTitle, setJobTitle] = useState<string>(INSIGHT_JOB_TITLES[0]);
 
   const countryQuery = useQuery({
     queryKey: ["insights-country", country],
-    queryFn: () => getCountryInsights(country),
+    queryFn: ({ signal }) => getCountryInsights(country, signal),
     placeholderData: keepPreviousData,
   });
 
   const jobTitleQuery = useQuery({
     queryKey: ["insights-job-title", country, jobTitle],
-    queryFn: () => getCountryJobTitleInsights(country, jobTitle),
+    queryFn: ({ signal }) =>
+      getCountryJobTitleInsights(country, jobTitle, signal),
     enabled: Boolean(jobTitle),
     placeholderData: keepPreviousData,
   });
@@ -109,7 +118,7 @@ export function InsightsDashboard() {
 
         {countryQuery.isLoading && <MetricsSkeleton />}
 
-        {countryQuery.isError && (
+        {countryQuery.isError && !isAbortLikeError(countryQuery.error) && (
           <p className="text-sm text-destructive">
             {(countryQuery.error as Error).message}
           </p>
@@ -170,7 +179,7 @@ export function InsightsDashboard() {
 
         {jobTitleQuery.isLoading && <MetricsSkeleton columns={3} />}
 
-        {jobTitleQuery.isError && (
+        {jobTitleQuery.isError && !isAbortLikeError(jobTitleQuery.error) && (
           <p className="text-sm text-destructive">
             {(jobTitleQuery.error as Error).message}
           </p>

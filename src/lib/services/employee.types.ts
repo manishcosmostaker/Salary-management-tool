@@ -8,8 +8,20 @@ export type ListEmployeesParams = {
   jobTitle?: string;
 };
 
+export type EmployeeListItem = Pick<
+  Employee,
+  | "id"
+  | "fullName"
+  | "jobTitle"
+  | "country"
+  | "salary"
+  | "currency"
+  | "department"
+  | "email"
+>;
+
 export type PaginatedEmployees = {
-  data: Employee[];
+  data: EmployeeListItem[];
   total: number;
   page: number;
   limit: number;

@@ -31,6 +31,16 @@ export function createEmployeeService(db: PrismaClient) {
           skip,
           take: limit,
           orderBy: { fullName: "asc" },
+          select: {
+            id: true,
+            fullName: true,
+            jobTitle: true,
+            country: true,
+            salary: true,
+            currency: true,
+            department: true,
+            email: true,
+          },
         }),
         db.employee.count({ where }),
       ]);

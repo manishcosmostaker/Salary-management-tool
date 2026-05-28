@@ -73,6 +73,16 @@ describe("EmployeeService.list", () => {
       skip: 10,
       take: 10,
       orderBy: { fullName: "asc" },
+      select: {
+        id: true,
+        fullName: true,
+        jobTitle: true,
+        country: true,
+        salary: true,
+        currency: true,
+        department: true,
+        email: true,
+      },
     });
     expect(db.employee.count).toHaveBeenCalledWith({ where: {} });
     expect(result).toEqual({

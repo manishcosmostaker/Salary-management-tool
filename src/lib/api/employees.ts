@@ -29,6 +29,7 @@ async function parseJson<T>(response: Response): Promise<T> {
 
 export async function listEmployees(
   query: ListEmployeesQuery = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedEmployeesResponse> {
   const params = new URLSearchParams();
 
@@ -38,7 +39,9 @@ export async function listEmployees(
   if (query.country) params.set("country", query.country);
   if (query.jobTitle) params.set("jobTitle", query.jobTitle);
 
-  const response = await fetch(`/api/employees?${params.toString()}`);
+  const response = await fetch(`/api/employees?${params.toString()}`, {
+    signal,
+  });
   return parseJson<PaginatedEmployeesResponse>(response);
 }
 

@@ -20,6 +20,7 @@ export function EmployeeDetail({ employeeId }: EmployeeDetailProps) {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["employee", employeeId],
     queryFn: () => getEmployee(employeeId),
+    retry: false,
   });
 
   if (isLoading) {
@@ -51,6 +52,7 @@ export function EmployeeDetail({ employeeId }: EmployeeDetailProps) {
         <div className="flex flex-wrap gap-2">
           <Link
             href={`/employees/${data.id}/edit`}
+            prefetch={false}
             className={cn(buttonVariants({ variant: "outline" }))}
           >
             Edit

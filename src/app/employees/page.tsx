@@ -14,7 +14,7 @@ export default function EmployeesPage() {
             Browse and manage employee records.
           </p>
         </div>
-        <Link href="/employees/new" className={cn(buttonVariants())}>
+        <Link href="/employees/new" prefetch={false} className={cn(buttonVariants())}>
           Add employee
         </Link>
       </div>

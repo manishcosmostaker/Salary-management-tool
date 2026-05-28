@@ -39,7 +39,6 @@ export function DeleteEmployeeDialog({
     mutationFn: () => deleteEmployee(employeeId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["employees"] });
-      await queryClient.invalidateQueries({ queryKey: ["employee", employeeId] });
       setOpen(false);
       router.push(redirectTo);
       router.refresh();

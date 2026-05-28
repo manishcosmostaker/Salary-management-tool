@@ -16,6 +16,7 @@ export default function EditEmployeePage() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["employee", employeeId],
     queryFn: () => getEmployee(employeeId),
+    retry: false,
   });
 
   async function handleSubmit(values: UpdateEmployeeInput) {

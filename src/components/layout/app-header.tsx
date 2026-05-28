@@ -21,6 +21,7 @@ export function AppHeader() {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
             >
               {item.label}

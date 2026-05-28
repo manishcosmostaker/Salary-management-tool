@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -22,6 +22,15 @@ import {
 } from "@/components/ui/table";
 
 const PAGE_SIZE = 25;
+const FILTER_DEBOUNCE_MS = 500;
+
+function isAbortLikeError(error: unknown): boolean {
+  return (
+    error instanceof DOMException ||
+    (error instanceof Error &&
+      (error.name === "AbortError" || error.name === "CanceledError"))
+  );
+}
 
 export function EmployeesTable() {
   const [page, setPage] = useState(1);
@@ -29,26 +38,59 @@ export function EmployeesTable() {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
   const [jobTitle, setJobTitle] = useState("");
+  const [jobTitleDebounced, setJobTitleDebounced] = useState("");
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setSearch(searchInput.trim());
       setPage(1);
-    }, 300);
+    }, FILTER_DEBOUNCE_MS);
 
     return () => window.clearTimeout(timer);
   }, [searchInput]);
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setPage(1);
+    }, FILTER_DEBOUNCE_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [country]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setJobTitleDebounced(jobTitle.trim());
+      setPage(1);
+    }, FILTER_DEBOUNCE_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [jobTitle]);
+
+  const effectiveSearch = search;
+  const effectiveCountry =
+    country.length === 0 || country.length === 2 ? country : "";
+  const effectiveJobTitle = jobTitleDebounced;
+
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["employees", page, search, country, jobTitle],
-    queryFn: () =>
-      listEmployees({
-        page,
-        limit: PAGE_SIZE,
-        search: search || undefined,
-        country: country || undefined,
-        jobTitle: jobTitle || undefined,
-      }),
+    queryKey: [
+      "employees",
+      page,
+      effectiveSearch,
+      effectiveCountry,
+      effectiveJobTitle,
+    ],
+    queryFn: ({ signal }) =>
+      listEmployees(
+        {
+          page,
+          limit: PAGE_SIZE,
+          search: effectiveSearch || undefined,
+          country: effectiveCountry || undefined,
+          jobTitle: effectiveJobTitle || undefined,
+        },
+        signal,
+      ),
+    placeholderData: keepPreviousData,
   });
 
   return (
@@ -76,7 +118,6 @@ export function EmployeesTable() {
             value={country}
             onChange={(event) => {
               setCountry(event.target.value.toUpperCase());
-              setPage(1);
             }}
             className="w-24 uppercase"
           />
@@ -91,7 +132,6 @@ export function EmployeesTable() {
             value={jobTitle}
             onChange={(event) => {
               setJobTitle(event.target.value);
-              setPage(1);
             }}
           />
         </div>
@@ -121,7 +161,7 @@ export function EmployeesTable() {
                 </TableRow>
               ))}
 
-            {isError && (
+            {isError && !isAbortLikeError(error) && (
               <TableRow>
                 <TableCell colSpan={6} className="text-destructive">
                   {(error as Error).message}
@@ -151,6 +191,7 @@ export function EmployeesTable() {
                     <div className="flex justify-end gap-1">
                       <Link
                         href={`/employees/${employee.id}`}
+                        prefetch={false}
                         className={cn(
                           buttonVariants({ variant: "ghost", size: "sm" }),
                         )}
@@ -181,9 +222,12 @@ export function EmployeesTable() {
       {data && (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {(data.page - 1) * data.limit + 1}–
-            {Math.min(data.page * data.limit, data.total)} of {data.total}{" "}
-            employees
+            {data.total === 0
+              ? "Showing 0-0 of 0 employees"
+              : `Showing ${(data.page - 1) * data.limit + 1}-${Math.min(
+                  data.page * data.limit,
+                  data.total,
+                )} of ${data.total} employees`}
           </p>
           <div className="flex items-center gap-2">
             <Button
